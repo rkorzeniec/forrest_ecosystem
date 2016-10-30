@@ -2,22 +2,21 @@ require 'pry'
 require 'rb-readline'
 
 class Forest
-  attr_accessor :trees_count, :lumberjacks_count, :bears_count, :size
+  attr_accessor :trees_count, :lumberjacks_count, :bears_count, :locations
 
   def initialize(args = {})
     @trees_count = 0
     @lumberjacks_count = 0
     @bears_count = 0
-    @size = args[:size] || 10
-    @locations = Array.new(size) { Array.new(size) }
+    @locations = args[:locations]
   end
 
-  def gridsize
-    @gridsize ||= (10 + Random.rand(40))
+  def size
+    locations.size
   end
 
-  def free_location?(x, y)
-    locations[x][y].nil?
+  def location(args = {})
+    locations[args[:x]][args[:y]]
   end
 
   def assign_location(organism, args = {})
@@ -36,9 +35,9 @@ class Forest
 
   def to_s
     grid = ''
-    locations.size.times do |i|
-      locations.size.times do |j|
-        grid += free_location?(i, j) ? '  | ' : "#{locations[i][j]} | "
+    locations.each do |locations_row|
+      locations_row.each do |location|
+        grid += location.free? ? '  | ' : "#{location} | "
       end
       grid += "\n"
     end
@@ -51,9 +50,11 @@ class Forest
 
   def find_organisms
     organisms = []
-    locations.each do |x|
-      x.each do |y|
-        organisms << y unless y.nil?
+    locations.each do |location_row|
+      location_row.each do |location|
+        organisms << location.tree unless location.tree_free?
+        organisms << location.bear unless location.bear_free?
+        organisms << location.lumberjack unless location.lumberjack_free?
       end
     end
     organisms

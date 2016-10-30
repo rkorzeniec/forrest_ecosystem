@@ -1,4 +1,5 @@
 require_relative 'builders/forest_builder'
+require_relative './forest'
 
 class ForestSimulation
   attr_reader :forest
@@ -8,11 +9,12 @@ class ForestSimulation
   end
 
   def setup
-    forest_builder = ForestBuilder.new(gridsize)
-    forest_builder.add_trees
-    forest_builder.add_lumberjacks
-    forest_builder.add_bears
-    @forest = forest_builder.forest
+    @forest = Forest.new
+    locations_builder = LocationsBuilder.new(gridsize, forest)
+    locations_builder.add_trees
+    locations_builder.add_lumberjacks
+    locations_builder.add_bears
+    forest.locations = locations_builder.locations
   end
 
   def execute

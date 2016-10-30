@@ -7,9 +7,9 @@ require 'rb-readline'
 class Tree < Organism
   attr_reader :age
 
-  def initialize(forest, args = {})
+  def initialize(location)
     @age = 0
-    super(forest, args)
+    super(location)
   end
 
   def take_turn
@@ -28,8 +28,8 @@ class Tree < Organism
     return if mature_period_in_months.nil?
     return if age < mature_period_in_months
 
-    grown_tree = grow_to.new(forest, x: x, y: y)
-    forest.assign_location(grown_tree, x: x, y: y)
+    grown_tree = grow_to.new(location)
+    location.tree = grown_tree
   end
 
   def mature_period_in_months
@@ -57,15 +57,10 @@ class Tree < Organism
     return if rand(100) > spawn_chance
 
     9.times do
-      new_x = valid_nearby_location_for(x)
-      new_y = valid_nearby_location_for(y)
+      spawn_location = location.neighbour_location
 
-      if forest.free_location?(new_x, new_y)
-        # binding.pry
-        args = { x: new_x, y: new_y }
-        forest.assign_location(SaplingTree.new(forest, args), args)
-        forest.trees_count += 1
-
+      if spawn_location.tree_free?
+        spawn_location.tree = SaplingTree.new(location)
         return
       end
     end

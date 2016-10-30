@@ -1,39 +1,35 @@
 require_relative '../forest'
+require_relative '../services/location'
 require_relative '../organisms/lumberjack'
 require_relative '../organisms/bear'
 require_relative '../factories/tree_factory'
 
-class ForestBuilder
-  attr_reader :forest
+class LocationsBuilder
+  attr_reader :locations
 
-  def initialize(size)
+  def initialize(size, forest)
     @size = size
-    @forest = Forest.new(size: size)
+    @locations = Array.new(size) { |i| Array.new(size) { |j| Location.new(forest: forest, x: i, y: j) } }
   end
 
   def add_trees
     trees.times do
       location = random_free_location
-      forest.assign_location(
-        TreeFactory.tree(Random.rand(3), forest, location), location
-      )
-      forest.trees_count += 1
+      location.tree = TreeFactory.tree(Random.rand(3), location)
     end
   end
 
   def add_lumberjacks
     lumberjacks.times do
       location = random_free_location
-      forest.assign_location(Lumberjack.new(forest, location), location)
-      forest.lumberjacks_count += 1
+      location.lumberjack = Lumberjack.new(location)
     end
   end
 
   def add_bears
     bears.times do
       location = random_free_location
-      forest.assign_location(Bear.new(forest, location), location)
-      forest.bears_count += 1
+      location.bear = Bear.new(location)
     end
   end
 
@@ -57,7 +53,7 @@ class ForestBuilder
     loop do
       x = rand(size)
       y = rand(size)
-      return { x: x, y: y } if forest.free_location?(x, y)
+      return locations[x][y] if locations[x][y].free?
     end
   end
 end

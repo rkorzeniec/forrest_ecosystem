@@ -6,28 +6,23 @@ require 'pry'
 require 'rb-readline'
 
 class Lumberjack < Organism
-  include Move
+  # include Move
 
   attr_reader :lumber
 
-  def initialize(forest, args = {})
+  def initialize(location)
     @lumber = 0
-    super(forest, args)
+    super(location)
   end
 
   def take_turn
     moves_per_turn.times do
-      new_x = valid_nearby_location_for(x)
-      new_y = valid_nearby_location_for(y)
+      new_location = location.neighbour_location
 
-      if forest.organism_at(new_x, new_y).is_a?(ElderTree) || forest.organism_at(new_x, new_y).is_a?(GrownTree)
-        chop_tree(new_x, new_y)
-        move(new_x, new_y)
-
+      if move(new_location) && !new_location.tree.nil?
+        chop_tree
         return
       end
-
-      move(new_x, new_y)
     end
   end
 
@@ -37,14 +32,19 @@ class Lumberjack < Organism
 
   private
 
+  def move(new_location)
+    return if new_location.nil?
+    location.lumberjack = nil
+    @location = new_location
+    location.lumberjack = self
+  end
+
   def moves_per_turn
     3
   end
 
-  def chop_tree(target_x, target_y)
-    # binding.pry
+  def chop_tree
     @lumber += 1
-    forest.trees_count -= 1
-    forest.assign_location(nil, x: target_x, y: target_y)
+    location.tree = nil
   end
 end

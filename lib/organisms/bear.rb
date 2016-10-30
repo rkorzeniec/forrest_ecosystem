@@ -10,24 +10,19 @@ class Bear < Organism
 
   attr_reader :mauls
 
-  def initialize(forest, args = {})
+  def initialize(location)
     @mauls = 0
-    super(forest, args)
+    super(location)
   end
 
   def take_turn
     moves_per_turn.times do
-      new_x = valid_nearby_location_for(x)
-      new_y = valid_nearby_location_for(y)
+      new_location = location.neighbour_location
 
-      if forest.organism_at(new_x, new_y).is_a?(Lumberjack)
-        maul(new_x, new_y)
-        move(new_x, new_y)
-
+      if move(new_location) && !new_location.tree.nil?
+        maul
         return
       end
-
-      move(new_x, new_y)
     end
   end
 
@@ -37,14 +32,18 @@ class Bear < Organism
 
   private
 
+  def move(new_location)
+    location.bear = nil
+    @location = new_location
+    location.bear = self
+  end
+
   def moves_per_turn
     5
   end
 
-  def maul(target_x, target_y)
-    # binding.pry
+  def maul
     @mauls += 1
-    forest.lumberjacks_count -= 1
-    forest.assign_location(nil, x: target_x, y: target_y)
+    location.lumberjack = nil
   end
 end
