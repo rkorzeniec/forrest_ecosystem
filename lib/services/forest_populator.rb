@@ -2,11 +2,11 @@ require_relative '../organisms/lumberjack'
 require_relative '../organisms/bear'
 require_relative '../factories/tree_factory'
 
-class ForestPopulator
-  attr_reader :forest
 
-  def initialize(forest)
+class ForestPopulator
+  def initialize(forest, logger)
     @forest = forest
+    @logger = logger || Logger.new
   end
 
   def populate
@@ -17,27 +17,32 @@ class ForestPopulator
 
   private
 
+  attr_reader :forest, :logger
+
   def populate_trees
     trees.times do
       location = random_free_location
-      location.tree = TreeFactory.tree(Random.rand(3), location)
-      forest.trees_count += 1
+      tree = TreeFactory.tree(Random.rand(3), location)
+      tree.add_observer(logger)
+      logger.update(self, :tree_added)
     end
   end
 
   def populate_lumberjacks
     lumberjacks.times do
       location = random_free_location
-      location.lumberjack = Lumberjack.new(location)
-      forest.lumberjacks_count += 1
+      lumberjack = Lumberjack.new(location)
+      lumberjack.add_observer(logger)
+      logger.update(self, :lumberjack_added)
     end
   end
 
   def populate_bears
     bears.times do
       location = random_free_location
-      location.bear = Bear.new(location)
-      forest.bears_count += 1
+      bear = Bear.new(location)
+      bear.add_observer(logger)
+      logger.update(self, :bear_added)
     end
   end
 

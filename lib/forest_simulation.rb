@@ -1,4 +1,4 @@
-require_relative 'builders/forest_populator'
+require_relative 'services/forest_populator'
 require_relative 'forest'
 
 class ForestSimulation
@@ -9,8 +9,8 @@ class ForestSimulation
   end
 
   def setup
-    @forest = Forest.new(gridsize)
-    populator = ForestPopulator.new(forest)
+    forest.add_observer(logger)
+    populator = ForestPopulator.new(forest, logger)
     populator.populate
   end
 
