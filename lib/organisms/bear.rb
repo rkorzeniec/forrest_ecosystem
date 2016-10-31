@@ -2,19 +2,17 @@ require 'colorize'
 require_relative 'organism'
 
 class Bear < Organism
-  attr_reader :mauls
-
   def initialize(location)
-    @mauls = 0
     super
+    location.bear = self
   end
 
   def take_turn
     moves_per_turn.times do
       new_location = location.neighbour_location
 
-      if move(new_location) && !new_location.lumberjack.nil?
-        maul
+      if move(new_location)
+        maul if location.lumberjack?
         return
       end
     end
@@ -27,7 +25,8 @@ class Bear < Organism
   private
 
   def move(new_location)
-    return unless new_location.bear.nil?
+    return false if new_location.bear?
+
     location.bear = nil
     @location = new_location
     location.bear = self
@@ -38,7 +37,8 @@ class Bear < Organism
   end
 
   def maul
-    @mauls += 1
     location.lumberjack = nil
+    changed
+    notify_observers(self, :remove_lumberjack)
   end
 end

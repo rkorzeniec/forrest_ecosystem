@@ -1,20 +1,21 @@
 require 'colorize'
 require_relative 'organism'
 
-class Lumberjack < Organism
-  attr_reader :lumber
+require 'pry'
+require 'rb-readline'
 
+class Lumberjack < Organism
   def initialize(location)
-    @lumber = 0
     super
+    location.lumberjack = self
   end
 
   def take_turn
     moves_per_turn.times do
       new_location = location.neighbour_location
 
-      if move(new_location) && !new_location.tree.nil?
-        chop_tree
+      if move(new_location)
+        chop_tree if location.tree?
         return
       end
     end
@@ -27,7 +28,8 @@ class Lumberjack < Organism
   private
 
   def move(new_location)
-    return unless new_location.lumberjack.nil?
+    return false if new_location.lumberjack?
+
     location.lumberjack = nil
     @location = new_location
     location.lumberjack = self
@@ -40,7 +42,8 @@ class Lumberjack < Organism
   def chop_tree
     return if location.tree.is_a?(SaplingTree)
 
-    @lumber += 1
     location.tree = nil
+    changed
+    notify_observers(self, :remove_tree)
   end
 end

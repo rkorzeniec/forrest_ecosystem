@@ -8,20 +8,28 @@ class Location
     @y = args[:y]
   end
 
+  def organisms
+    organisms = []
+    organisms << tree if tree?
+    organisms << lumberjack if lumberjack?
+    organisms << bear if bear?
+    organisms
+  end
+
   def free?
-    return true if tree_free? && bear_free? && lumberjack_free?
+    return true if !tree? && !bear? && !lumberjack?
   end
 
-  def tree_free?
-    tree.nil?
+  def tree?
+    !tree.nil?
   end
 
-  def bear_free?
-    bear.nil?
+  def bear?
+    !bear.nil?
   end
 
-  def lumberjack_free?
-    lumberjack.nil?
+  def lumberjack?
+    !lumberjack.nil?
   end
 
   def neighbour_location

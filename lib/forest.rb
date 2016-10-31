@@ -1,11 +1,13 @@
+require 'observer'
 require_relative 'services/location'
 
 class Forest
-  attr_accessor :trees_count, :lumberjacks_count, :bears_count, :locations, :size
+  include Observable
+
+  attr_accessor :locations, :size
 
   def initialize(size)
     @size = size
-    initialize_default_counts
     initialize_locations
   end
 
@@ -32,12 +34,6 @@ class Forest
 
   private
 
-  def initialize_default_counts
-    @trees_count = 0
-    @lumberjacks_count = 0
-    @bears_count = 0
-  end
-
   def initialize_locations
     @locations = Array.new(size) do |i|
       Array.new(size) { |j| Location.new(forest: self, x: i, y: j) }
@@ -48,9 +44,7 @@ class Forest
     organisms = []
     locations.each do |location_row|
       location_row.each do |location|
-        organisms << location.tree unless location.tree_free?
-        organisms << location.bear unless location.bear_free?
-        organisms << location.lumberjack unless location.lumberjack_free?
+        organisms += location.organisms unless location.free?
       end
     end
     organisms
@@ -61,10 +55,8 @@ class Forest
   end
 
   def check_bears_quota
-
   end
 
   def check_lumberjacks_quota
-
   end
 end

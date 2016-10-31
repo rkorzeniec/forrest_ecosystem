@@ -5,8 +5,9 @@ class Tree < Organism
   attr_reader :age
 
   def initialize(location)
-    @age = 0
     super
+    @age = 0
+    location.tree = self
   end
 
   def take_turn
@@ -25,6 +26,7 @@ class Tree < Organism
     return if mature_period_in_months.nil?
     return if age < mature_period_in_months
 
+    location.tree = nil
     grown_tree = grow_to.new(location)
     location.tree = grown_tree
   end
@@ -55,11 +57,12 @@ class Tree < Organism
 
     9.times do
       spawn_location = location.neighbour_location
+      next if spawn_location.tree?
 
-      if spawn_location.tree_free?
-        spawn_location.tree = SaplingTree.new(location)
-        return
-      end
+      spawn_location.tree = SaplingTree.new(location)
+      changed
+      notify_observers(self, :tree_spawned)
+      return
     end
   end
 end
