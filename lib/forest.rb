@@ -1,30 +1,16 @@
-require 'pry'
-require 'rb-readline'
+require_relative 'services/location'
 
 class Forest
-  attr_accessor :trees_count, :lumberjacks_count, :bears_count, :locations
+  attr_accessor :trees_count, :lumberjacks_count, :bears_count, :locations, :size
 
-  def initialize(args = {})
-    @trees_count = 0
-    @lumberjacks_count = 0
-    @bears_count = 0
-    @locations = args[:locations]
-  end
-
-  def size
-    locations.size
+  def initialize(size)
+    @size = size
+    initialize_default_counts
+    initialize_locations
   end
 
   def location(args = {})
     locations[args[:x]][args[:y]]
-  end
-
-  def assign_location(organism, args = {})
-    locations[args[:x]][args[:y]] = organism
-  end
-
-  def organism_at(x, y)
-    return locations[x][y] unless locations[x][y].nil?
   end
 
   def tick
@@ -46,7 +32,17 @@ class Forest
 
   private
 
-  attr_reader :locations
+  def initialize_default_counts
+    @trees_count = 0
+    @lumberjacks_count = 0
+    @bears_count = 0
+  end
+
+  def initialize_locations
+    @locations = Array.new(size) do |i|
+      Array.new(size) { |j| Location.new(forest: self, x: i, y: j) }
+    end
+  end
 
   def find_organisms
     organisms = []

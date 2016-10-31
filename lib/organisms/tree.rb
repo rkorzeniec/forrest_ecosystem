@@ -1,15 +1,12 @@
 require 'colorize'
-require_relative './organism'
-
-require 'pry'
-require 'rb-readline'
+require_relative 'organism'
 
 class Tree < Organism
   attr_reader :age
 
   def initialize(location)
     @age = 0
-    super(location)
+    super
   end
 
   def take_turn

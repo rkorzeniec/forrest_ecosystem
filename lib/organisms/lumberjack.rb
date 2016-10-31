@@ -1,18 +1,12 @@
 require 'colorize'
-require_relative './organism'
-require_relative '../mixins/move'
-
-require 'pry'
-require 'rb-readline'
+require_relative 'organism'
 
 class Lumberjack < Organism
-  # include Move
-
   attr_reader :lumber
 
   def initialize(location)
     @lumber = 0
-    super(location)
+    super
   end
 
   def take_turn
@@ -33,7 +27,7 @@ class Lumberjack < Organism
   private
 
   def move(new_location)
-    return if new_location.nil?
+    return unless new_location.lumberjack.nil?
     location.lumberjack = nil
     @location = new_location
     location.lumberjack = self
@@ -44,6 +38,8 @@ class Lumberjack < Organism
   end
 
   def chop_tree
+    return if location.tree.is_a?(SaplingTree)
+
     @lumber += 1
     location.tree = nil
   end

@@ -1,5 +1,5 @@
-require_relative 'builders/forest_builder'
-require_relative './forest'
+require_relative 'builders/forest_populator'
+require_relative 'forest'
 
 class ForestSimulation
   attr_reader :forest
@@ -9,12 +9,9 @@ class ForestSimulation
   end
 
   def setup
-    @forest = Forest.new
-    locations_builder = LocationsBuilder.new(gridsize, forest)
-    locations_builder.add_trees
-    locations_builder.add_lumberjacks
-    locations_builder.add_bears
-    forest.locations = locations_builder.locations
+    @forest = Forest.new(gridsize)
+    populator = ForestPopulator.new(forest)
+    populator.populate
   end
 
   def execute
@@ -27,7 +24,7 @@ class ForestSimulation
   end
 
   def to_s
-    print %x{clear}
+    print `clear`
     puts "Time: #{time} | Forest: #{forest.size} x #{forest.size} | " \
          "Trees: #{forest.trees_count} | " \
          "Lumberjacks: #{forest.lumberjacks_count} | " \
@@ -40,6 +37,6 @@ class ForestSimulation
   attr_reader :time
 
   def gridsize
-    @gridsize ||= (10 + Random.rand(20))
+    @gridsize ||= (10 + Random.rand(1))
   end
 end
