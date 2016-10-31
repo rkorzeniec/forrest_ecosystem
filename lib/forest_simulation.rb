@@ -1,4 +1,5 @@
 require_relative 'services/forest_populator'
+require_relative 'services/logger'
 require_relative 'forest'
 
 class ForestSimulation
@@ -6,6 +7,7 @@ class ForestSimulation
 
   def initialize
     @time = 0
+    @forest = Forest.new(gridsize)
   end
 
   def setup
@@ -16,20 +18,19 @@ class ForestSimulation
 
   def execute
     4800.times do
+      print `clear`
       forest.tick
-      to_s
+      print_status
       @time += 1
-      sleep(2)
+      STDIN.gets
     end
   end
 
-  def to_s
-    print `clear`
-    puts "Time: #{time} | Forest: #{forest.size} x #{forest.size} | " \
-         "Trees: #{forest.trees_count} | " \
-         "Lumberjacks: #{forest.lumberjacks_count} | " \
-         "Bears: #{forest.bears_count}"
+  def print_status
+    puts "Time: #{time} | Forest: #{forest.size} x #{forest.size}"
+    puts logger.organism_counts
     puts forest.to_s
+    puts logger.output
   end
 
   private
@@ -37,6 +38,10 @@ class ForestSimulation
   attr_reader :time
 
   def gridsize
-    @gridsize ||= (10 + Random.rand(1))
+    @_gridsize ||= (10 + Random.rand(1))
+  end
+
+  def logger
+    @_logger ||= Logger.new
   end
 end

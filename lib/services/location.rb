@@ -29,9 +29,10 @@ class Location
   end
 
   def to_s
-    return bear.to_s unless bear.nil?
-    return lumberjack.to_s unless lumberjack.nil?
-    return tree.to_s unless tree.nil?
+    return bear.to_s if bear?
+    return lumberjack.to_s if lumberjack?
+    return tree.to_s if tree?
+    ' '
   end
 
   private

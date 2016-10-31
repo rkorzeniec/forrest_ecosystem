@@ -23,7 +23,7 @@ class Forest
     grid = ''
     locations.each do |locations_row|
       locations_row.each do |location|
-        grid += location.free? ? '  | ' : "#{location} | "
+        grid += "#{location} | "
       end
       grid += "\n"
     end
