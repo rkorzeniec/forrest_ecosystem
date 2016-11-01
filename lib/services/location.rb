@@ -37,6 +37,24 @@ class Location
     forest.location(valid_nearby_location)
   end
 
+  def remove_tree
+    tree.location = nil
+    self.tree = nil
+    tree.nil?
+  end
+
+  def remove_lumberjack
+    lumberjack.location = nil
+    self.lumberjack = nil
+    lumberjack.nil?
+  end
+
+  def remove_bear
+    bear.location = nil
+    self.bear = nil
+    bear.nil?
+  end
+
   def to_s
     output = ''
     output += bear? ? bear.to_s : ' '
