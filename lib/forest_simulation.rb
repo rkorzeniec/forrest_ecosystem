@@ -7,11 +7,10 @@ class ForestSimulation
 
   def initialize
     @time = 0
-    @forest = Forest.new(gridsize)
   end
 
   def setup
-    forest.add_observer(logger)
+    @forest = Forest.new(gridsize)
     populator = ForestPopulator.new(forest, logger)
     populator.populate
   end
@@ -19,7 +18,7 @@ class ForestSimulation
   def execute
     4800.times do
       print `clear`
-      forest.tick
+      forest.execute
       print_status
       @time += 1
       STDIN.gets

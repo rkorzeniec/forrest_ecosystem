@@ -15,7 +15,7 @@ class Forest
     locations[args[:x]][args[:y]]
   end
 
-  def tick
+  def execute
     take_turns(find_organisms)
     check_lumberjacks_quota
     check_bears_quota
