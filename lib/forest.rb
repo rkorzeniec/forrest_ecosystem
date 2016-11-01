@@ -46,6 +46,8 @@ class Forest
   end
 
   def take_turns(organisms)
-    organisms.map(&:take_turn)
+    organisms.each do |organism|
+      organism.take_turn unless organism.location.nil?
+    end
   end
 end

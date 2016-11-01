@@ -1,6 +1,6 @@
 class Location
   attr_reader :x, :y
-  attr_accessor :tree, :bear, :lumberjack, :forest
+  attr_accessor :tree, :bear, :lumberjack
 
   def initialize(args = {})
     @forest = args[:forest]
@@ -9,15 +9,16 @@ class Location
   end
 
   def organisms
-    organisms = []
-    organisms << tree if tree?
-    organisms << lumberjack if lumberjack?
-    organisms << bear if bear?
-    organisms
+    organism = []
+    organism << tree if tree?
+    organism << lumberjack if lumberjack?
+    organism << bear if bear?
+    organism
   end
 
   def free?
-    return true if !tree? && !bear? && !lumberjack?
+    return true if tree.nil? && bear.nil? && lumberjack.nil?
+    false
   end
 
   def tree?
@@ -37,20 +38,23 @@ class Location
   end
 
   def to_s
-    return bear.to_s if bear?
-    return lumberjack.to_s if lumberjack?
-    return tree.to_s if tree?
-    ' '
+    output = ''
+    output += bear? ? bear.to_s : ' '
+    output += lumberjack? ? lumberjack.to_s : ' '
+    output += tree? ? tree.to_s : ' '
+    output
   end
 
   private
+
+  attr_reader :forest
 
   def valid_nearby_location
     loop do
       new_x = x + nearby_location
       new_y = y + nearby_location
-      next if (new_x < 0 || new_y < 0) || (new_x > (forest.size - 1) || new_y > (forest.size - 1))
       next if new_x == x && new_y == y
+      next if (new_x < 0 || new_y < 0) || (new_x > (forest.size - 1) || new_y > (forest.size - 1))
       return { x: new_x, y: new_y }
     end
   end
