@@ -30,10 +30,12 @@ class Logger
 
   def lumberjack_added(_object)
     @lumberjacks += 1
+    @output_stream += "Lumberjack was spawned\n"
   end
 
-  def bear_added(_object)
+  def bear_added(object)
     @bears += 1
+    @output_stream += "Bear was spawned\n"
   end
 
   def remove_tree(object)
