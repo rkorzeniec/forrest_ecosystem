@@ -9,11 +9,9 @@ class Bear < Organism
 
   def take_turn
     moves_per_turn.times do
-      new_location = location.neighbour_location
-
-      if move(new_location)
+      if move
         maul if location.lumberjack?
-        return
+        break
       end
     end
   end
@@ -24,10 +22,11 @@ class Bear < Organism
 
   private
 
-  def move(new_location)
-    return false if new_location.bear?
+  def move
+    new_location = location.neighbour_location
+    return if new_location.bear?
 
-    location.bear = nil
+    location.remove_bear
     @location = new_location
     location.bear = self
   end
@@ -37,7 +36,8 @@ class Bear < Organism
   end
 
   def maul
-    location.lumberjack = nil
+    return unless location.remove_lumberjack
+
     changed
     notify_observers(self, :remove_lumberjack)
   end

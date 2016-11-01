@@ -26,9 +26,8 @@ class Tree < Organism
     return if mature_period_in_months.nil?
     return if age < mature_period_in_months
 
-    location.tree = nil
-    grown_tree = grow_to.new(location)
-    location.tree = grown_tree
+    location.tree = grow_to.new(location)
+    self.location = nil
   end
 
   def mature_period_in_months

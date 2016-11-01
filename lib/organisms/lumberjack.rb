@@ -12,11 +12,9 @@ class Lumberjack < Organism
 
   def take_turn
     moves_per_turn.times do
-      new_location = location.neighbour_location
-
-      if move(new_location)
+      if move
         chop_tree if location.tree?
-        return
+        break
       end
     end
   end
@@ -27,10 +25,11 @@ class Lumberjack < Organism
 
   private
 
-  def move(new_location)
-    return false if new_location.lumberjack?
+  def move
+    new_location = location.neighbour_location
+    return if new_location.lumberjack? || new_location.bear?
 
-    location.lumberjack = nil
+    location.remove_lumberjack
     @location = new_location
     location.lumberjack = self
   end
@@ -41,8 +40,8 @@ class Lumberjack < Organism
 
   def chop_tree
     return if location.tree.is_a?(SaplingTree)
+    return unless location.remove_tree
 
-    location.tree = nil
     changed
     notify_observers(self, :remove_tree)
   end
