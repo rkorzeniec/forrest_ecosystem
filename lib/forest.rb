@@ -1,9 +1,6 @@
-require 'observer'
 require_relative 'services/location'
 
 class Forest
-  include Observable
-
   attr_accessor :locations, :size
 
   def initialize(size)
@@ -17,8 +14,6 @@ class Forest
 
   def execute
     take_turns(find_organisms)
-    check_lumberjacks_quota
-    check_bears_quota
   end
 
   def to_s
@@ -52,11 +47,5 @@ class Forest
 
   def take_turns(organisms)
     organisms.map(&:take_turn)
-  end
-
-  def check_bears_quota
-  end
-
-  def check_lumberjacks_quota
   end
 end
