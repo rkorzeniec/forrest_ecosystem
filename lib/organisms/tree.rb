@@ -26,8 +26,13 @@ class Tree < Organism
     return if mature_period_in_months.nil?
     return if age < mature_period_in_months
 
-    location.tree = grow_to.new(location)
-    self.location = nil
+    current_location = location
+    location.remove_tree
+    delete_observer(logger)
+    grown_tree = grow_to.new(current_location)
+    grown_tree.add_observer(logger)
+
+    true
   end
 
   def mature_period_in_months
@@ -58,7 +63,8 @@ class Tree < Organism
       spawn_location = location.neighbour_location
       next if spawn_location.tree?
 
-      spawn_location.tree = SaplingTree.new(location)
+      sappling = SaplingTree.new(spawn_location)
+      sappling.add_observer(logger)
       changed
       notify_observers(self, :tree_spawned)
       return

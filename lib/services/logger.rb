@@ -33,7 +33,7 @@ class Logger
     @output_stream += "Lumberjack was spawned\n"
   end
 
-  def bear_added(object)
+  def bear_added(_object)
     @bears += 1
     @output_stream += "Bear was spawned\n"
   end

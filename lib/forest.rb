@@ -47,7 +47,7 @@ class Forest
 
   def take_turns(organisms)
     organisms.each do |organism|
-      organism.take_turn unless organism.location.nil?
+      organism.take_turn if organism.can_take_turn?
     end
   end
 end
