@@ -11,7 +11,7 @@ class Tree < Organism
   end
 
   def take_turn
-    grow
+    return if grow
     spawn_sapling
     @age += 1
   end
@@ -23,8 +23,8 @@ class Tree < Organism
   private
 
   def grow
-    return if mature_period_in_months.nil?
-    return if age < mature_period_in_months
+    return false if mature_period_in_months.nil?
+    return false if age < mature_period_in_months
 
     current_location = location
     location.remove_tree
@@ -59,15 +59,15 @@ class Tree < Organism
     return unless spawning_permitted?
     return if rand(100) > spawn_chance
 
-    9.times do
+    8.times do
       spawn_location = location.neighbour_location
-      next if spawn_location.tree?
+      next if spawn_location.tree? || spawn_location.lumberjack?
 
       sappling = SaplingTree.new(spawn_location)
       sappling.add_observer(logger)
       changed
       notify_observers(self, :tree_spawned)
-      return
+      break
     end
   end
 end

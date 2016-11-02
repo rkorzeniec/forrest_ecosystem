@@ -10,8 +10,7 @@ class Bear < Organism
   def take_turn
     moves_per_turn.times do
       if move
-        maul if location.lumberjack?
-        break
+        return if location.lumberjack? && maul
       end
     end
   end
@@ -24,7 +23,7 @@ class Bear < Organism
 
   def move
     new_location = location.neighbour_location
-    return if new_location.bear?
+    return false if new_location.bear?
 
     location.remove_bear
     @location = new_location
@@ -36,9 +35,10 @@ class Bear < Organism
   end
 
   def maul
-    return unless location.remove_lumberjack
+    return false unless location.remove_lumberjack
 
     changed
     notify_observers(self, :remove_lumberjack)
+    true
   end
 end
