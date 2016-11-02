@@ -1,3 +1,5 @@
+require_relative 'organism_remover'
+
 class Location
   attr_reader :x, :y
   attr_accessor :tree, :bear, :lumberjack
@@ -38,21 +40,15 @@ class Location
   end
 
   def remove_tree
-    tree.location = nil
-    self.tree = nil
-    tree.nil?
+    OrganismRemover.new(tree, self).remove(:tree)
   end
 
   def remove_lumberjack
-    lumberjack.location = nil
-    self.lumberjack = nil
-    lumberjack.nil?
+    OrganismRemover.new(lumberjack, self).remove(:lumberjack)
   end
 
   def remove_bear
-    bear.location = nil
-    self.bear = nil
-    bear.nil?
+    OrganismRemover.new(bear, self).remove(:bear)
   end
 
   def to_s
