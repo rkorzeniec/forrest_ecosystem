@@ -1,6 +1,10 @@
 require_relative 'tree'
 
 class GrownTree < Tree
+  def lumber
+    1
+  end
+  
   private
 
   def mature_period_in_months

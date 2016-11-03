@@ -14,6 +14,11 @@ class Tree < Organism
     @age += 1
   end
 
+  def lumber
+    raise NotImplementedError,
+          "#lumber must be implemented in #{self.class}"
+  end
+
   def to_s
     'T'.green
   end

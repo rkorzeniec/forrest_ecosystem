@@ -1,6 +1,10 @@
 require_relative 'tree'
 
 class SaplingTree < Tree
+  def lumber
+    0
+  end
+
   def to_s
     't'.green
   end

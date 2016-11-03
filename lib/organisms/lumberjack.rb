@@ -2,15 +2,18 @@ require 'colorize'
 require_relative 'organism'
 
 class Lumberjack < Organism
+  attr_reader :lumber
+
   def initialize(location)
     super
+    @lumber = 0
     location.lumberjack = self
   end
 
   def take_turn
     moves_per_turn.times do
       if move
-        return if location.tree? && chop_tree
+        return if location.tree? && chop_tree(location.tree)
       end
     end
   end
@@ -34,12 +37,13 @@ class Lumberjack < Organism
     3
   end
 
-  def chop_tree
-    return false if location.tree.is_a?(SaplingTree)
+  def chop_tree(tree)
+    return false if tree.is_a?(SaplingTree)
     return false unless location.remove_tree
 
+    @lumber += tree.lumber
     changed
-    notify_observers(self, :remove_tree)
+    notify_observers(self, :remove_tree, tree.lumber)
     true
   end
 end
