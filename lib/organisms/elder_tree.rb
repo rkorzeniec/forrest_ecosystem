@@ -14,4 +14,8 @@ class ElderTree < Tree
   def spawn_chance
     20
   end
+
+  def grow_to
+    nil
+  end
 end

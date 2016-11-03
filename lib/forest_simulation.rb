@@ -17,24 +17,24 @@ class ForestSimulation
 
   def execute
     4800.times do
-      print `clear`
+      @time += 1
       forest.execute
       print_status
-      @time += 1
-      STDIN.gets
+      sleep(1)
     end
-  end
-
-  def print_status
-    puts "Time: #{time} | Forest: #{forest.size} x #{forest.size}"
-    puts logger.organism_counts
-    puts forest.to_s
-    puts logger.output
   end
 
   private
 
   attr_reader :time
+
+  def print_status
+    print `clear`
+    puts "Years: #{years} Months: #{months} | Forest: #{forest.size} x #{forest.size}"
+    puts logger.organism_counts
+    puts forest.to_s
+    puts logger.output
+  end
 
   def gridsize
     @_gridsize ||= (10 + Random.rand(1))
@@ -42,5 +42,13 @@ class ForestSimulation
 
   def logger
     @_logger ||= Logger.new
+  end
+
+  def years
+    time / 12
+  end
+
+  def months
+    time % 12
   end
 end

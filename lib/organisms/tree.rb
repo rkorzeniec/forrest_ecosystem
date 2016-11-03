@@ -2,8 +2,6 @@ require 'colorize'
 require_relative 'organism'
 
 class Tree < Organism
-  attr_reader :age
-
   def initialize(location)
     super
     @age = 0
@@ -22,6 +20,8 @@ class Tree < Organism
 
   private
 
+  attr_reader :age
+
   def grow
     return false if mature_period_in_months.nil?
     return false if age < mature_period_in_months
@@ -33,6 +33,22 @@ class Tree < Organism
     grown_tree.add_observer(logger)
 
     true
+  end
+
+  def spawn_sapling
+    return unless spawning_permitted?
+    return if rand(100) > spawn_chance
+
+    8.times do
+      spawn_location = location.neighbour_location
+      next if spawn_location.tree? || spawn_location.lumberjack?
+
+      sappling = SaplingTree.new(spawn_location)
+      sappling.add_observer(logger)
+      changed
+      notify_observers(self, :tree_spawned)
+      break
+    end
   end
 
   def mature_period_in_months
@@ -53,21 +69,5 @@ class Tree < Organism
   def grow_to
     raise NotImplementedError,
           "#grow_to must be implemented in #{self.class}"
-  end
-
-  def spawn_sapling
-    return unless spawning_permitted?
-    return if rand(100) > spawn_chance
-
-    8.times do
-      spawn_location = location.neighbour_location
-      next if spawn_location.tree? || spawn_location.lumberjack?
-
-      sappling = SaplingTree.new(spawn_location)
-      sappling.add_observer(logger)
-      changed
-      notify_observers(self, :tree_spawned)
-      break
-    end
   end
 end
