@@ -6,6 +6,7 @@ class Logger
     @trees = 0
     @lumberjacks = 0
     @bears = 0
+    default_monthly_logs
   end
 
   def update(object, message_type, *args)
@@ -22,7 +23,17 @@ class Logger
     "Trees: #{trees} | Lumberjacks: #{lumberjacks} | Bears: #{bears}"
   end
 
+  def monthly_logs
+    temp_logs = @monthly_logs
+    default_monthly_logs
+    "Monthly lumber: #{temp_logs[:lumber]} | Monthly mauls #{temp_logs[:mauls]}"
+  end
+
   private
+
+  def default_monthly_logs
+    @monthly_logs = { lumber: 0, mauls: 0 }
+  end
 
   def tree_added(_object)
     @trees += 1
@@ -40,11 +51,13 @@ class Logger
 
   def remove_tree(object, lumber_quantity)
     @trees -= lumber_quantity
+    @monthly_logs[:lumber] += lumber_quantity
     @output_stream += "#{object.class} chopped tree\n"
   end
 
   def remove_lumberjack(object)
     @lumberjacks -= 1
+    @monthly_logs[:mauls] += 1
     @output_stream += "#{object.class} mauled lumberjack\n"
   end
 

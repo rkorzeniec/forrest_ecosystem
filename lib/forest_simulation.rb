@@ -20,7 +20,7 @@ class ForestSimulation
       @time += 1
       forest.execute
       print_status
-      sleep(1)
+      sleep(1.5)
     end
   end
 
@@ -32,6 +32,7 @@ class ForestSimulation
     print `clear`
     puts "Years: #{years} Months: #{months} | Forest: #{forest.size} x #{forest.size}"
     puts logger.organism_counts
+    puts logger.monthly_logs
     puts forest.to_s
     puts logger.output
   end
