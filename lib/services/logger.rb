@@ -8,8 +8,8 @@ class Logger
     @bears = 0
   end
 
-  def update(object, message_type)
-    method(message_type).call(object)
+  def update(object, message_type, *args)
+    method(message_type).call(object, *args)
   end
 
   def output
@@ -38,8 +38,8 @@ class Logger
     @output_stream += "Bear was spawned\n"
   end
 
-  def remove_tree(object)
-    @trees -= 1
+  def remove_tree(object, lumber_quantity)
+    @trees -= lumber_quantity
     @output_stream += "#{object.class} chopped tree\n"
   end
 
