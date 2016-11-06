@@ -40,15 +40,15 @@ class Location
   end
 
   def remove_tree
-    OrganismRemover.new(tree, self).remove(:tree)
+    OrganismRemover.new(tree).remove(:tree)
   end
 
   def remove_lumberjack
-    OrganismRemover.new(lumberjack, self).remove(:lumberjack)
+    OrganismRemover.new(lumberjack).remove(:lumberjack)
   end
 
   def remove_bear
-    OrganismRemover.new(bear, self).remove(:bear)
+    OrganismRemover.new(bear).remove(:bear)
   end
 
   def to_s
