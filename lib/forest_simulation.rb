@@ -11,8 +11,9 @@ class ForestSimulation
 
   def setup
     @forest = Forest.new(gridsize)
-    populator = ForestPopulator.new(forest, logger)
-    populator.populate
+    forest_populator.populate_all(
+      trees: trees, lumberjacks: lumberjacks, bears: bears
+    )
   end
 
   def execute
@@ -27,6 +28,10 @@ class ForestSimulation
   private
 
   attr_reader :time
+
+  def forest_populator
+    @_forest_populator ||= ForestPopulator.new(forest, logger)
+  end
 
   def print_status
     print `clear`
