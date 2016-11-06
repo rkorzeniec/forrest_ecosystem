@@ -4,10 +4,11 @@ require_relative 'organism'
 class Lumberjack < Organism
   attr_reader :lumber
 
-  def initialize(location)
+  def initialize(location, logger)
     super
     @lumber = 0
     location.lumberjack = self
+    notify_observers(self, :lumberjack_added)
   end
 
   def take_turn

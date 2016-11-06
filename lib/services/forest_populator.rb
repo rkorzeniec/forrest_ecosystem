@@ -22,27 +22,21 @@ class ForestPopulator
   def populate_trees
     trees.times do
       location = random_free_location
-      tree = TreeFactory.tree(Random.rand(3), location)
-      tree.add_observer(logger)
-      logger.update(self, :tree_added)
+      TreeFactory.tree(Random.rand(3), location, logger)
     end
   end
 
   def populate_lumberjacks
     lumberjacks.times do
       location = random_free_location
-      lumberjack = Lumberjack.new(location)
-      lumberjack.add_observer(logger)
-      logger.update(self, :lumberjack_added)
+      Lumberjack.new(location, logger)
     end
   end
 
   def populate_bears
     bears.times do
       location = random_free_location
-      bear = Bear.new(location)
-      bear.add_observer(logger)
-      logger.update(self, :bear_added)
+      Bear.new(location, logger)
     end
   end
 

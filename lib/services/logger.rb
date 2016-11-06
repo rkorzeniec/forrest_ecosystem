@@ -35,8 +35,9 @@ class Logger
     @monthly_logs = { lumber: 0, mauls: 0 }
   end
 
-  def tree_added(_object)
+  def tree_added(object)
     @trees += 1
+    @output_stream += "#{object.class} was spawned\n"
   end
 
   def lumberjack_added(_object)
@@ -59,10 +60,5 @@ class Logger
     @lumberjacks -= 1
     @monthly_logs[:mauls] += 1
     @output_stream += "#{object.class} mauled lumberjack\n"
-  end
-
-  def tree_spawned(object)
-    @trees += 1
-    @output_stream += "#{object.class} spawned tree\n"
   end
 end

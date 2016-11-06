@@ -2,9 +2,10 @@ require 'colorize'
 require_relative 'organism'
 
 class Bear < Organism
-  def initialize(location)
+  def initialize(location, logger)
     super
     location.bear = self
+    notify_observers(self, :bear_added)
   end
 
   def take_turn

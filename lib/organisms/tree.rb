@@ -2,10 +2,11 @@ require 'colorize'
 require_relative 'organism'
 
 class Tree < Organism
-  def initialize(location)
+  def initialize(location, logger)
     super
     @age = 0
     location.tree = self
+    notify_observers(self, :tree_added)
   end
 
   def take_turn
@@ -34,8 +35,7 @@ class Tree < Organism
     current_location = location
     location.remove_tree
     delete_observer(logger)
-    grown_tree = grow_to.new(current_location)
-    grown_tree.add_observer(logger)
+    grow_to.new(current_location, logger)
 
     true
   end
@@ -48,10 +48,7 @@ class Tree < Organism
       spawn_location = location.neighbour_location
       next if spawn_location.tree? || spawn_location.lumberjack?
 
-      sappling = SaplingTree.new(spawn_location)
-      sappling.add_observer(logger)
-      changed
-      notify_observers(self, :tree_spawned)
+      SaplingTree.new(spawn_location, logger)
       break
     end
   end

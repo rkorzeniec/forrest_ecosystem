@@ -5,8 +5,10 @@ class Organism
 
   attr_accessor :location
 
-  def initialize(location)
+  def initialize(location, logger)
     @location = location
+    add_observer(logger)
+    changed
   end
 
   def can_take_turn?
