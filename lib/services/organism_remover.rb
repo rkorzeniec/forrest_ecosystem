@@ -8,6 +8,7 @@ class OrganismRemover
 
   def remove(type)
     organism.location = nil
+    organism.removed
     location.send("#{type}=", nil)
     !location.send("#{type}?")
   end

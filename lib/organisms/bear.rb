@@ -16,6 +16,11 @@ class Bear < Organism
     end
   end
 
+  def removed
+    changed
+    notify_observers(self, :bear_removed)
+  end
+
   def to_s
     'B'.cyan
   end
@@ -39,7 +44,7 @@ class Bear < Organism
     return false unless location.remove_lumberjack
 
     changed
-    notify_observers(self, :remove_lumberjack)
+    notify_observers(self, :maul_lumberjack)
     true
   end
 end

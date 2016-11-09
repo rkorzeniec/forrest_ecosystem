@@ -69,17 +69,30 @@ class Logger
     @output_stream += "Bear was spawned\n"
   end
 
-  def remove_tree(object, lumber_quantity)
-    @trees -= lumber_quantity
+  def chop_tree(object, lumber_quantity)
     @monthly_logs[:lumber] += lumber_quantity
     @yearly_logs[:lumber] += lumber_quantity
-    @output_stream += "#{object.class} chopped tree\n"
+    @output_stream += "#{object.class} chopped tree. "
   end
 
-  def remove_lumberjack(object)
-    @lumberjacks -= 1
+  def maul_lumberjack(object)
     @monthly_logs[:mauls] += 1
     @yearly_logs[:mauls] += 1
-    @output_stream += "#{object.class} mauled lumberjack\n"
+    @output_stream += "#{object.class} mauled lumberjack. "
+  end
+
+  def tree_removed(object)
+    @trees -= 1
+    @output_stream += "#{object.class} removed\n"
+  end
+
+  def lumberjack_removed(object)
+    @lumberjacks -= 1
+    @output_stream += "#{object.class} removed\n"
+  end
+
+  def bear_removed(object)
+    @bears -= 1
+    @output_stream += "#{object.class} removed\n"
   end
 end

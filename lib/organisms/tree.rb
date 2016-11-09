@@ -20,6 +20,11 @@ class Tree < Organism
           "#lumber must be implemented in #{self.class}"
   end
 
+  def removed
+    changed
+    notify_observers(self, :tree_removed)
+  end
+
   def to_s
     'T'.green
   end

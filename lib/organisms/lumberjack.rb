@@ -19,6 +19,11 @@ class Lumberjack < Organism
     end
   end
 
+  def removed
+    changed
+    notify_observers(self, :lumberjack_removed)
+  end
+
   def to_s
     'L'.yellow
   end
@@ -44,7 +49,7 @@ class Lumberjack < Organism
 
     @lumber += tree.lumber
     changed
-    notify_observers(self, :remove_tree, tree.lumber)
+    notify_observers(self, :chop_tree, tree.lumber)
     true
   end
 end

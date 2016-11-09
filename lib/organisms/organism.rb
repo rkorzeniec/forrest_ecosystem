@@ -18,4 +18,9 @@ class Organism
   def logger
     @_logger ||= @observer_peers.select { |k| k.is_a?(Logger) }.first.first
   end
+
+  def removed
+    raise NotImplementedError,
+          "#removed must be implemented in #{self.class}"
+  end
 end
