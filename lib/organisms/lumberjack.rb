@@ -34,9 +34,10 @@ class Lumberjack < Organism
     new_location = location.neighbour_location
     return false if new_location.lumberjack? || new_location.bear?
 
-    location.remove_lumberjack
-    @location = new_location
-    location.lumberjack = self
+    location.lumberjack = nil
+    new_location.lumberjack = self
+    self.location = new_location
+    new_location.lumberjack?
   end
 
   def moves_per_turn

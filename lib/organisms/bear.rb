@@ -31,9 +31,10 @@ class Bear < Organism
     new_location = location.neighbour_location
     return false if new_location.bear?
 
-    location.remove_bear
-    @location = new_location
-    location.bear = self
+    location.bear = nil
+    new_location.bear = self
+    self.location = new_location
+    new_location.bear?
   end
 
   def moves_per_turn
