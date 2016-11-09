@@ -24,7 +24,7 @@ class ForestSimulation
       @time += 1
       forest.execute
       print_status
-      sleep(1.5)
+      sleep(2)
     end
   end
 
