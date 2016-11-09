@@ -23,6 +23,7 @@ class ForestSimulation
     4800.times do
       @time += 1
       forest.execute
+      check_quotas
       print_status
       sleep(2)
     end
@@ -34,6 +35,10 @@ class ForestSimulation
 
   def forest_populator
     @_forest_populator ||= ForestPopulator.new(forest, logger)
+  end
+
+  def forest_fixings
+    @_forest_fixings ||= ForestFixings.new(forest)
   end
 
   def print_status
@@ -66,7 +71,34 @@ class ForestSimulation
     (time % 12).zero?
   end
 
-  def forest_fixings
-    @_forest_fixings ||= ForestFixings.new(forest)
+  def check_quotas
+    forest_populator.populate_lumberjacks(1) if logger.lumberjacks < 1
+    return unless year_passed?
+    check_lumberjacks_quota
+    check_bears_quota
+  end
+
+  def check_lumberjacks_quota
+    if logger.yearly_lumber >= logger.lumberjacks
+      hire_lumberjacks
+    elsif logger.lumberjacks > 1
+      OrganismRemover.new(forest.find_random_lumberjaack).remove(:lumberjack)
+    end
+  end
+
+  def check_bears_quota
+    if logger.yearly_mauls > 0
+      OrganismRemover.new(forest.find_random_bear).remove(:bear)
+    else
+      forest_populator.populate_bears(1)
+    end
+  end
+
+  def hire_lumberjacks
+    forest_populator.populate_lumberjacks(
+      forest_fixings.premium_lumberjacks(
+        logger.lumberjacks, logger.yearly_lumber
+      )
+    )
   end
 end

@@ -17,8 +17,8 @@ class ForestFixings
     ((size * size) * 0.02).to_i
   end
 
-  def premium_lumberjacks
-    (logger.yearly_logs / logger.lumberjacks).to_i
+  def premium_lumberjacks(total_lumberjacks, yearly_lumber)
+    (yearly_lumber / total_lumberjacks).to_i
   end
 
   private
