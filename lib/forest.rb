@@ -13,7 +13,20 @@ class Forest
   end
 
   def execute
-    take_turns(find_organisms)
+    find_organisms
+    take_turns
+  end
+
+  def find_random_lumberjaack
+    @organisms.each do |organism|
+      return organism if organism.is_a?(Lumberjack)
+    end
+  end
+
+  def find_random_bear
+    @organisms.each do |organism|
+      return organism if organism.is_a?(Bear)
+    end
   end
 
   def to_s
@@ -29,6 +42,8 @@ class Forest
 
   private
 
+  attr_reader :organisms
+
   def initialize_locations
     @locations = Array.new(size) do |i|
       Array.new(size) { |j| Location.new(forest: self, x: i, y: j) }
@@ -36,17 +51,16 @@ class Forest
   end
 
   def find_organisms
-    organisms = []
+    @organisms = []
     locations.each do |location_row|
       location_row.each do |location|
-        organisms += location.organisms unless location.free?
+        @organisms += location.organisms unless location.free?
       end
     end
-    organisms
   end
 
-  def take_turns(organisms)
-    organisms.each do |organism|
+  def take_turns
+    @organisms.each do |organism|
       organism.take_turn if organism.can_take_turn?
     end
   end
