@@ -7,10 +7,10 @@ class ForestSimulation
 
   def initialize
     @time = 0
+    @forest = Forest.new(gridsize)
   end
 
   def setup
-    @forest = Forest.new(gridsize)
     forest_populator.populate_all(
       trees: trees, lumberjacks: lumberjacks, bears: bears
     )
