@@ -1,4 +1,5 @@
 require_relative 'services/forest_populator'
+require_relative 'services/forest_fixings'
 require_relative 'services/logger'
 require_relative 'forest'
 
@@ -12,7 +13,9 @@ class ForestSimulation
 
   def setup
     forest_populator.populate_all(
-      trees: trees, lumberjacks: lumberjacks, bears: bears
+      trees: forest_fixings.trees,
+      lumberjacks: forest_fixings.lumberjacks,
+      bears: forest_fixings.bears
     )
   end
 
@@ -63,4 +66,7 @@ class ForestSimulation
     (time % 12).zero?
   end
 
+  def forest_fixings
+    @_forest_fixings ||= ForestFixings.new(forest)
+  end
 end
