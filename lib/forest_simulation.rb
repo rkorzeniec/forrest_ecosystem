@@ -37,9 +37,10 @@ class ForestSimulation
     print `clear`
     puts "Years: #{years} Months: #{months} | Forest: #{forest.size} x #{forest.size}"
     puts logger.organism_counts
-    puts logger.monthly_logs
     puts forest.to_s
-    puts logger.output
+    puts logger.output_yearly_logs if year_passed?
+    puts logger.output_monthly_logs
+    puts logger.output_logs
   end
 
   def gridsize
@@ -57,4 +58,9 @@ class ForestSimulation
   def months
     time % 12
   end
+
+  def year_passed?
+    (time % 12).zero?
+  end
+
 end
