@@ -80,7 +80,7 @@ class ForestSimulation
 
   def check_lumberjacks_quota
     if logger.yearly_lumber >= logger.lumberjacks
-      hire_lumberjacks
+      forest_populator.populate_lumberjacks(1)
     elsif logger.lumberjacks > 1
       OrganismRemover.new(forest.find_random_lumberjaack).remove(:lumberjack)
     end
@@ -92,13 +92,5 @@ class ForestSimulation
     else
       forest_populator.populate_bears(1)
     end
-  end
-
-  def hire_lumberjacks
-    forest_populator.populate_lumberjacks(
-      forest_fixings.premium_lumberjacks(
-        logger.lumberjacks, logger.yearly_lumber
-      )
-    )
   end
 end
