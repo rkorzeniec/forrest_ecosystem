@@ -1,6 +1,9 @@
 require_relative 'services/forest_populator'
 require_relative 'services/forest_fixings'
 require_relative 'services/logger'
+require_relative 'services/quotas_applier'
+require_relative 'strategies/bear_quotas'
+require_relative 'strategies/lumberjack_quotas'
 require_relative 'forest'
 
 class ForestSimulation
@@ -29,13 +32,17 @@ class ForestSimulation
     end
   end
 
-  private
-
-  attr_reader :time
-
   def forest_populator
     @_forest_populator ||= ForestPopulator.new(forest, logger)
   end
+
+  def logger
+    @_logger ||= Logger.new
+  end
+
+  private
+
+  attr_reader :time
 
   def forest_fixings
     @_forest_fixings ||= ForestFixings.new(forest)
@@ -53,10 +60,6 @@ class ForestSimulation
 
   def gridsize
     @_gridsize ||= (10 + Random.rand(1))
-  end
-
-  def logger
-    @_logger ||= Logger.new
   end
 
   def years
@@ -79,18 +82,16 @@ class ForestSimulation
   end
 
   def check_lumberjacks_quota
-    if logger.yearly_lumber >= logger.lumberjacks
-      forest_populator.populate_lumberjacks(1)
-    elsif logger.lumberjacks > 1
-      OrganismRemover.new(forest.find_random_lumberjaack).remove(:lumberjack)
-    end
+    quotas_applier.quota = LumberjackQuotas.new(logger)
+    quotas_applier.apply(:lumberjack)
   end
 
   def check_bears_quota
-    if logger.yearly_mauls > 0
-      OrganismRemover.new(forest.find_random_bear).remove(:bear)
-    else
-      forest_populator.populate_bears(1)
-    end
+    quotas_applier.quota = BearQuotas.new(logger)
+    quotas_applier.apply(:bear)
+  end
+
+  def quotas_applier
+    @_quotas_applier ||= QuotasApplier.new(self)
   end
 end
