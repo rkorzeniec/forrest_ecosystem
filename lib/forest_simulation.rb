@@ -2,8 +2,8 @@ require_relative 'services/forest_populator'
 require_relative 'services/forest_fixings'
 require_relative 'services/logger'
 require_relative 'services/quotas_applier'
-require_relative 'strategies/bear_quotas'
-require_relative 'strategies/lumberjack_quotas'
+require_relative 'strategies/quotas/bear_quotas'
+require_relative 'strategies/quotas/lumberjack_quotas'
 require_relative 'forest'
 
 class ForestSimulation
