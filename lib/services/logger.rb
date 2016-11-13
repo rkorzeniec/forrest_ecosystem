@@ -6,9 +6,9 @@ class Logger
     @trees = 0
     @lumberjacks = 0
     @bears = 0
-    default_monthly_logs
-    default_yearly_logs
     @total = { lumber: 0, mauls: 0 }
+    default_monthly_counts
+    default_yearly_counts
   end
 
   def update(object, message_type, *args)
@@ -21,38 +21,34 @@ class Logger
     temp_output
   end
 
-  def organism_counts
-    "Trees: #{trees} | Lumberjacks: #{lumberjacks} | Bears: #{bears}"
+  def monthly_counts
+    temp_logs = @monthly
+    default_monthly_counts
+    temp_logs
   end
 
-  def output_monthly_logs
-    temp_logs = @monthly_logs
-    default_monthly_logs
-    "Monthly lumber: #{temp_logs[:lumber]} | Monthly mauls #{temp_logs[:mauls]}"
-  end
-
-  def output_yearly_logs
-    temp_logs = @yearly_logs
-    default_yearly_logs
-    "Yearly lumber: #{temp_logs[:lumber]} | Yearly mauls #{temp_logs[:mauls]}"
+  def yearly_counts
+    temp_logs = @yearly
+    default_yearly_counts
+    temp_logs
   end
 
   def yearly_lumber
-    @yearly_logs[:lumber]
+    @yearly[:lumber]
   end
 
   def yearly_mauls
-    @yearly_logs[:mauls]
+    @yearly[:mauls]
   end
 
   private
 
-  def default_monthly_logs
-    @monthly_logs = { lumber: 0, mauls: 0 }
+  def default_monthly_counts
+    @monthly = { lumber: 0, mauls: 0 }
   end
 
-  def default_yearly_logs
-    @yearly_logs = { lumber: 0, mauls: 0 }
+  def default_yearly_counts
+    @yearly = { lumber: 0, mauls: 0 }
   end
 
   def tree_added(object)
@@ -71,15 +67,15 @@ class Logger
   end
 
   def chop_tree(object, lumber_quantity)
-    @monthly_logs[:lumber] += lumber_quantity
-    @yearly_logs[:lumber] += lumber_quantity
+    @monthly[:lumber] += lumber_quantity
+    @yearly[:lumber] += lumber_quantity
     @total[:lumber] += lumber_quantity
     @output_stream += "#{object.class} chopped tree. "
   end
 
   def maul_lumberjack(object)
-    @monthly_logs[:mauls] += 1
-    @yearly_logs[:mauls] += 1
+    @monthly[:mauls] += 1
+    @yearly[:mauls] += 1
     @total[:mauls] += 1
     @output_stream += "#{object.class} mauled lumberjack. "
   end
