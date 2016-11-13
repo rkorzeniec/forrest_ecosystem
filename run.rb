@@ -2,6 +2,6 @@
 
 require './lib/forest_simulation'
 
-simulation = ForestSimulation.new
+simulation = ForestSimulation.new(4800)
 simulation.setup
 simulation.execute

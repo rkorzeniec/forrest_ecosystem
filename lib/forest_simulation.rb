@@ -7,10 +7,11 @@ require_relative 'strategies/quotas/lumberjack_quotas'
 require_relative 'forest'
 
 class ForestSimulation
-  attr_reader :forest, :time
+  attr_reader :forest, :time, :cycles
 
-  def initialize
+  def initialize(cycles)
     @time = 0
+    @cycles = cycles
     @forest = Forest.new(gridsize)
   end
 
@@ -23,7 +24,7 @@ class ForestSimulation
   end
 
   def execute
-    4800.times do
+    cycles.times do
       @time += 1
       forest.execute
       check_quotas
