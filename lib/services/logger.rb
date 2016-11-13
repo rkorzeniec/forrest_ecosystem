@@ -1,5 +1,5 @@
 class Logger
-  attr_reader :trees, :lumberjacks, :bears
+  attr_reader :trees, :lumberjacks, :bears, :total
 
   def initialize
     @output_stream = ''
@@ -8,6 +8,7 @@ class Logger
     @bears = 0
     default_monthly_logs
     default_yearly_logs
+    @total = { lumber: 0, mauls: 0 }
   end
 
   def update(object, message_type, *args)
@@ -72,12 +73,14 @@ class Logger
   def chop_tree(object, lumber_quantity)
     @monthly_logs[:lumber] += lumber_quantity
     @yearly_logs[:lumber] += lumber_quantity
+    @total[:lumber] += lumber_quantity
     @output_stream += "#{object.class} chopped tree. "
   end
 
   def maul_lumberjack(object)
     @monthly_logs[:mauls] += 1
     @yearly_logs[:mauls] += 1
+    @total[:mauls] += 1
     @output_stream += "#{object.class} mauled lumberjack. "
   end
 
