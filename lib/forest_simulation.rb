@@ -7,7 +7,7 @@ require_relative 'strategies/quotas/lumberjack_quotas'
 require_relative 'forest'
 
 class ForestSimulation
-  attr_reader :forest
+  attr_reader :forest, :time
 
   def initialize
     @time = 0
@@ -42,22 +42,13 @@ class ForestSimulation
 
   private
 
-  attr_reader :time
+    @_gridsize ||= (10 + Random.rand(1))
 
   def forest_fixings
     @_forest_fixings ||= ForestFixings.new(forest)
   end
 
   def print_status
-    print `clear`
-    puts "Years: #{years} Months: #{months} | Forest: #{forest.size} x #{forest.size}"
-    puts logger.organism_counts
-    puts forest.to_s
-    puts logger.output_yearly_logs if year_passed?
-    puts logger.output_monthly_logs
-    puts logger.output_logs
-  end
-
   def gridsize
     @_gridsize ||= (10 + Random.rand(1))
   end
