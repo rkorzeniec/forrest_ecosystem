@@ -42,23 +42,18 @@ class ForestSimulation
 
   private
 
+  def gridsize
     @_gridsize ||= (10 + Random.rand(1))
+  end
 
   def forest_fixings
     @_forest_fixings ||= ForestFixings.new(forest)
   end
 
-  def print_status
-  def gridsize
-    @_gridsize ||= (10 + Random.rand(1))
   end
 
-  def years
-    time / 12
-  end
-
-  def months
-    time % 12
+  def quotas_applier
+    @_quotas_applier ||= QuotasApplier.new(self)
   end
 
   def year_passed?
@@ -82,7 +77,5 @@ class ForestSimulation
     quotas_applier.apply(:bear)
   end
 
-  def quotas_applier
-    @_quotas_applier ||= QuotasApplier.new(self)
   end
 end
