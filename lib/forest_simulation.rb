@@ -86,7 +86,7 @@ class ForestSimulation
 
   def report_monthly_status
     simulation_reporter.outputter = ConsoleOutputter.new
-    simulation_reporter.output
+    simulation_reporter.report
   end
 
   def report_final_status

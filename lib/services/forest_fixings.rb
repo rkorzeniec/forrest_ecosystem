@@ -1,25 +1,19 @@
 class ForestFixings
-  attr_reader :forest
+  attr_reader :forest_size
 
-  def initialize(forest)
-    @forest = forest
+  def initialize(forest_size)
+    @forest_size = forest_size
   end
 
   def trees
-    ((size * size) * 0.5).to_i
+    ((forest_size * forest_size) * 0.5).to_i
   end
 
   def lumberjacks
-    ((size * size) * 0.1).to_i
+    ((forest_size * forest_size) * 0.1).to_i
   end
 
   def bears
-    ((size * size) * 0.02).to_i
-  end
-
-  private
-
-  def size
-    @_size ||= forest.size
+    ((forest_size * forest_size) * 0.02).to_i
   end
 end
