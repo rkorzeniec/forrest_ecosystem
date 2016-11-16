@@ -52,7 +52,7 @@ class ForestSimulation
   end
 
   def forest_fixings
-    @_forest_fixings ||= ForestFixings.new(forest)
+    @_forest_fixings ||= ForestFixings.new(gridsize)
   end
 
   def simulation_reporter
@@ -91,6 +91,6 @@ class ForestSimulation
 
   def report_final_status
     simulation_reporter.outputter = FileOutputter.new
-    simulation_reporter.output
+    simulation_reporter.report
   end
 end

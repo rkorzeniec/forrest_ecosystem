@@ -14,7 +14,7 @@ class SimulationReporter
     @outputter = ConsoleOutputter.new
   end
 
-  def output
+  def report
     outputter.output(self)
   end
 
@@ -40,7 +40,7 @@ class SimulationReporter
     logs = ''
     logs += total_logs + ' || ' if simulation_finished?
     logs += yearly_logs + ' || ' if year_passed?
-    logs += monthly_logs + "\n"
+    logs += monthly_logs + "\n\n"
     logs += logger.output_logs
     logs
   end
