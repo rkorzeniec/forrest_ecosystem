@@ -32,8 +32,9 @@ class ForestSimulation
       @time += 1
       forest.execute
       check_quotas
-      sleep(2)
       report_monthly_status
+      puts "\nPress ENTER to continue\n"
+      STDIN.gets
     end
     report_final_status
   end
