@@ -1,5 +1,5 @@
 class Logger
-  attr_reader :trees, :lumberjacks, :bears, :total
+  attr_reader :trees, :lumberjacks, :bears
 
   def initialize
     @output_stream = ''
@@ -31,6 +31,10 @@ class Logger
     temp_logs = @yearly
     default_yearly_counts
     temp_logs
+  end
+
+  def total_counts
+    @total
   end
 
   def yearly_lumber
