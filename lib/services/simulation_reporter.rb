@@ -39,7 +39,7 @@ class SimulationReporter
   def logs
     logs = ''
     logs += total_logs + ' || ' if simulation_finished?
-    logs += yearly_logs + ' || ' if year_passed?
+    logs += yearly_logs + ' || ' if year_passed? || simulation_finished?
     logs += monthly_logs + "\n\n"
     logs += logger.output_logs
     logs
@@ -58,7 +58,7 @@ class SimulationReporter
   end
 
   def simulation_finished?
-    simulation.time >= simulation.cycles
+    simulation.time >= simulation.cycles || logger.trees == 0
   end
 
   def monthly_logs

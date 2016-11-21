@@ -28,6 +28,7 @@ class ForestSimulation
 
   def execute
     cycles.times do
+      break if logger.trees == 0
       @time += 1
       forest.execute
       check_quotas
